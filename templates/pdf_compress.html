@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Сжатие PDF
+    </title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            font-family:
+                Arial,
+                sans-serif;
+
+            background: #f4f6f8;
+
+            color: #222;
+
+        }
+
+
+        .container {
+
+            max-width: 650px;
+
+            margin: 60px auto;
+
+            padding: 20px;
+
+        }
+
+
+        .card {
+
+            background: white;
+
+            padding: 35px;
+
+            border-radius: 14px;
+
+            box-shadow:
+                0 5px 25px
+                rgba(0, 0, 0, 0.08);
+
+        }
+
+
+        h1 {
+
+            text-align: center;
+
+            margin-top: 0;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .upload {
+
+            border: 2px dashed #aaa;
+
+            border-radius: 12px;
+
+            padding: 40px 20px;
+
+            text-align: center;
+
+            cursor: pointer;
+
+        }
+
+
+        .upload:hover {
+
+            border-color: #555;
+
+        }
+
+
+        .icon {
+
+            font-size: 50px;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        input[type=file] {
+
+            width: calc(100% - 10px);
+
+            margin-top: 20px;
+
+            margin-left: 160px;
+
+        }       
+
+
+        #filename {
+
+            margin-top: 15px;
+
+            font-weight: bold;
+
+            word-break: break-word;
+
+        }
+
+
+        .settings {
+
+            margin-top: 25px;
+
+        }
+
+
+        .settings label {
+
+            display: block;
+
+            margin-bottom: 10px;
+
+            font-weight: bold;
+
+        }
+
+
+        select {
+
+            width: 100%;
+
+            padding: 13px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 8px;
+
+            font-size: 16px;
+
+            background: white;
+
+        }
+
+
+        button {
+
+            width: 100%;
+
+            padding: 15px;
+
+            margin-top: 25px;
+
+            border: 0;
+
+            border-radius: 8px;
+
+            background: #222;
+
+            color: white;
+
+            font-size: 17px;
+
+            cursor: pointer;
+
+        }
+
+
+        button:hover {
+
+            background: #444;
+
+        }
+
+
+        button:disabled {
+
+            opacity: 0.6;
+
+            cursor: wait;
+
+        }
+
+
+        .back {
+
+            display: block;
+
+            text-align: center;
+
+            margin-top: 20px;
+
+            color: #666;
+
+            text-decoration: none;
+
+        }
+
+
+        .back:hover {
+
+            text-decoration: underline;
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+    <div class="card">
+        <h1>
+            📄 Сжатие PDF
+        </h1>
+
+        <form
+            method="POST"
+            enctype="multipart/form-data"
+            onsubmit="compress()"
+        >
+
+            <div class="upload">
+                <div class="icon">
+                    📁
+                </div>
+
+                <div>
+                    Выберите PDF-файл
+                </div>
+
+                <input
+                    type="file"
+                    name="file"
+                    accept=".pdf,application/pdf"
+                    required
+                    onchange="showFile(this)"
+                >
+
+                <div id="filename"></div>
+
+            </div>
+
+            <div class="settings">
+                <label
+                    for="quality"
+                >
+                    Степень сжатия
+                </label>
+
+                <select
+                    name="quality"
+                    id="quality"
+                >
+
+                    <option value="screen">
+                        Максимальное сжатие
+                    </option>
+
+                    <option
+                        value="ebook"
+                        selected
+                    >
+                        Баланс качества и размера
+                    </option>
+
+                    <option value="printer">
+                        Высокое качество
+                    </option>
+
+                    <option value="prepress">
+                        Для печати
+                    </option>
+                </select>
+            </div>
+
+            <button
+                type="submit"
+                id="button"
+            >
+                Сжать PDF
+            </button>
+
+
+        </form>
+        <a
+            href="/"
+            class="back"
+        >
+            ← Вернуться на главную
+        </a>
+    </div>
+
+</div>
+<script>
+
+
+function showFile(input) {
+
+    const filename =
+        document.getElementById(
+            "filename"
+        );
+
+
+    if (
+        input.files &&
+        input.files.length > 0
+    ) {
+
+        filename.textContent =
+            "Выбран файл: " +
+            input.files[0].name;
+
+    }
+
+}
+
+
+function compress() {
+
+    const button =
+        document.getElementById(
+            "button"
+        );
+
+
+    button.disabled = true;
+
+
+    button.textContent =
+        "⏳ Сжимаем PDF...";
+
+}
+
+</script>
+</body>
+</html>
