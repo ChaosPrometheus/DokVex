@@ -276,8 +276,6 @@
         }
 
 
-        /* Сетка */
-
         .grid {
 
             display: grid;
@@ -291,9 +289,6 @@
             gap: 22px;
 
         }
-
-
-        /* Карточка */
 
         .card {
 
@@ -463,9 +458,6 @@
 
         }
 
-
-        /* Недоступные карточки */
-
         .card.disabled {
 
             opacity: 0.65;
@@ -604,8 +596,6 @@
     <div class="grid">
 
 
-        <!-- 1. PDF -->
-
         <a
             href="/pdf-compress"
             class="card"
@@ -657,9 +647,6 @@
 
         </a>
 
-
-        <!-- 3. PowerPoint -->
-
         <a
             href="/pptx-compress"
             class="card"
@@ -709,9 +696,6 @@
 
         </a>
 
-
-        <!-- 4. Изображения -->
-
         <a
             href="/image"
             class="card"
@@ -735,10 +719,7 @@
             </span>
 
         </a>
-
-
-        <!-- 5. PDF инструменты -->
-
+        
         <div class="card disabled">
 
             <div class="icon-box">
@@ -784,8 +765,6 @@
 
         </div>
 
-
-        <!-- 7. OCR -->
 
         <div class="card disabled">
 
@@ -845,9 +824,6 @@ const savedTheme =
 
 
 setTheme(savedTheme);
-
-
-// Переключение темы
 
 toggle.addEventListener(
     'click',
