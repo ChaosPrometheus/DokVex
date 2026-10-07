@@ -11,7 +11,6 @@
 | **Сжатие PowerPoint** | Оптимизация PPTX и картинок |
 | **Сжатие Excel** | Оптимизация XLSX и картинок |
 | **Изображения** | Сжатие и конвертация (JPG, PNG, WEBP, BMP) |
-| **Галерея** | Просмотр фото с ПК (в браузере) и с папки на сервере |
 
 После сжатия показывается размер **до / после** и процент экономии.
 
@@ -88,16 +87,14 @@ docvex/
 ├── templates/             # HTML-шаблоны
 │   ├── base.html
 │   ├── index.html
-│   ├── gallery.html
 │   └── ...
 └── tools/                 # Логика инструментов
     ├── common.py          # Общие функции (валидация, сжатие Office)
     ├── pdf_tool.py
     ├── word_tool.py
     ├── pptx_tool.py
-    ├── excel_tool.py
-    ├── image_tool.py
-    └── gallery_tool.py
+    ├── excel_tool.py 
+    └── image_tool.py
 ```
 
 ## Примечания
