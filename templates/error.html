@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Ошибка · DocVex{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1 class="page-title">Ошибка</h1>
+    <div class="alert alert-error">
+        {{ message }}
+    </div>
+    <a href="/" class="btn">На главную</a>
+</div>
+{% endblock %}

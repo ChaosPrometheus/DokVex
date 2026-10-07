@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Сжатие Excel · DocVex{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1 class="page-title">📗 Сжатие Excel</h1>
+
+    {% if error %}
+    <div class="alert alert-error">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST" enctype="multipart/form-data" onsubmit="startProcess()">
+        <div class="upload" id="dropzone">
+            <div class="icon">📗</div>
+            <div>Выберите файл XLSX или перетащите сюда</div>
+            <input type="file" name="file" accept=".xlsx" required
+                   onchange="showFile(this)">
+            <div id="filename"></div>
+        </div>
+
+        <div class="settings">
+            <label>Качество изображений</label>
+            <select name="quality">
+                <option value="40">40% — сильное сжатие</option>
+                <option value="50">50% — сильное</option>
+                <option value="65" selected>65% — рекомендуется</option>
+                <option value="75">75% — хорошее качество</option>
+                <option value="85">85% — высокое качество</option>
+            </select>
+
+            <label>Максимальная ширина изображения</label>
+            <select name="max_width">
+                <option value="1200">1200 px — сильное сжатие</option>
+                <option value="1600">1600 px — среднее</option>
+                <option value="1920" selected>1920 px — рекомендуется</option>
+                <option value="2560">2560 px — высокое качество</option>
+            </select>
+        </div>
+
+        <button type="submit" id="button">Сжать Excel</button>
+    </form>
+
+    <a href="/" class="back">← Вернуться на главную</a>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function showFile(input) {
+    if (input.files && input.files.length > 0) {
+        const size = (input.files[0].size / (1024 * 1024)).toFixed(2);
+        document.getElementById("filename").textContent =
+            "Выбран файл: " + input.files[0].name + " (" + size + " МБ)";
+    }
+}
+
+function startProcess() {
+    const button = document.getElementById("button");
+    button.disabled = true;
+    button.textContent = "⏳ Сжимаем Excel...";
+}
+</script>
+{% endblock %}

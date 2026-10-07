@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Изображения · DocVex{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1 class="page-title">🖼️ Изображения</h1>
+
+    {% if error %}
+    <div class="alert alert-error">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST" enctype="multipart/form-data" onsubmit="startProcess()">
+        <div class="upload" id="dropzone">
+            <div class="icon">🖼️</div>
+            <div>Выберите изображение или перетащите сюда</div>
+            <input type="file" name="file"
+                   accept=".jpg,.jpeg,.png,.webp,.bmp,.tiff,.tif"
+                   required onchange="showFile(this)">
+            <div id="filename"></div>
+        </div>
+
+        <div class="settings">
+            <label>Формат</label>
+            <select name="format">
+                <option value="original">Оригинальный</option>
+                <option value="JPEG">JPG</option>
+                <option value="PNG">PNG</option>
+                <option value="WEBP">WEBP</option>
+                <option value="BMP">BMP</option>
+            </select>
+
+            <label>Качество</label>
+            <select name="quality">
+                <option value="40">40% — сильное сжатие</option>
+                <option value="60">60% — среднее</option>
+                <option value="80" selected>80% — хорошее качество</option>
+                <option value="90">90% — высокое качество</option>
+                <option value="100">100% — максимальное</option>
+            </select>
+
+            <label>Максимальная ширина (px)</label>
+            <input type="number" name="width" placeholder="Например: 1920" min="1">
+        </div>
+
+        <button type="submit" id="button">Обработать изображение</button>
+    </form>
+
+    <a href="/" class="back">← Вернуться на главную</a>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function showFile(input) {
+    if (input.files && input.files.length > 0) {
+        const size = (input.files[0].size / (1024 * 1024)).toFixed(2);
+        document.getElementById("filename").textContent =
+            "Выбран файл: " + input.files[0].name + " (" + size + " МБ)";
+    }
+}
+
+function startProcess() {
+    const button = document.getElementById("button");
+    button.disabled = true;
+    button.textContent = "⏳ Обработка...";
+}
+</script>
+{% endblock %}

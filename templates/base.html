@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}DocVex{% endblock %}</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --border: rgba(0, 0, 0, 0.06);
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            --shadow-hover: 0 12px 30px rgba(79, 70, 229, 0.15);
+            --radius: 16px;
+            --icon-bg: #f1f5f9;
+            --icon-bg-hover: #e0e7ff;
+            --badge-bg: #f1f5f9;
+            --toggle-bg: #e2e8f0;
+            --danger: #ef4444;
+            --success: #10b981;
+            --warning: #f59e0b;
+        }
+
+        [data-theme="dark"] {
+            --primary: #818cf8;
+            --primary-hover: #a5b4fc;
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.08);
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            --shadow-hover: 0 12px 30px rgba(129, 140, 248, 0.2);
+            --icon-bg: #334155;
+            --icon-bg-hover: #4338ca;
+            --badge-bg: #334155;
+            --toggle-bg: #334155;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.5;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(circle at 15% 20%, rgba(79, 70, 229, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 85% 80%, rgba(14, 165, 233, 0.07) 0%, transparent 40%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        [data-theme="dark"] body::before {
+            opacity: 0.6;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 40px 20px 60px;
+        }
+
+        .container-wide {
+            max-width: 1200px;
+        }
+
+        /* Header */
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .logo-icon {
+            font-size: 28px;
+            line-height: 1;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+        }
+
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--toggle-bg);
+            border: none;
+            border-radius: 50px;
+            padding: 8px 16px 8px 12px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text);
+            transition: background 0.25s ease, transform 0.2s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.03);
+        }
+
+        /* Card */
+        .card {
+            background: var(--card-bg);
+            padding: 36px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        h1.page-title {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 28px;
+            font-size: 1.6rem;
+        }
+
+        /* Upload zone */
+        .upload {
+            border: 2px dashed var(--text-muted);
+            border-radius: 14px;
+            padding: 40px 20px;
+            text-align: center;
+            transition: border-color 0.2s, background 0.2s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .upload:hover,
+        .upload.dragover {
+            border-color: var(--primary);
+            background: rgba(79, 70, 229, 0.04);
+        }
+
+        .upload .icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .upload input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+
+        #filename {
+            margin-top: 14px;
+            font-weight: 600;
+            word-break: break-word;
+            color: var(--primary);
+        }
+
+        /* Settings */
+        .settings {
+            margin-top: 28px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        select,
+        input[type="number"] {
+            width: 100%;
+            padding: 13px 14px;
+            margin-bottom: 18px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 16px;
+            background: var(--card-bg);
+            color: var(--text);
+            transition: border-color 0.2s;
+        }
+
+        select:focus,
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* Buttons */
+        button[type="submit"],
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin-top: 10px;
+            border: 0;
+            border-radius: 10px;
+            background: var(--primary);
+            color: white;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: background 0.2s, transform 0.15s;
+        }
+
+        button[type="submit"]:hover,
+        .btn:hover {
+            background: var(--primary-hover);
+        }
+
+        button[type="submit"]:disabled {
+            opacity: 0.6;
+            cursor: wait;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            margin-top: 12px;
+        }
+
+        .btn-secondary:hover {
+            background: var(--icon-bg);
+            color: var(--text);
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 24px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+
+        .back:hover {
+            color: var(--primary);
+        }
+
+        /* Alerts */
+        .alert {
+            padding: 14px 18px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        .alert-error {
+            background: rgba(239, 68, 68, 0.12);
+            color: #b91c1c;
+            border: 1px solid rgba(239, 68, 68, 0.25);
+        }
+
+        [data-theme="dark"] .alert-error {
+            color: #fca5a5;
+        }
+
+        .alert-success {
+            background: rgba(16, 185, 129, 0.12);
+            color: #047857;
+            border: 1px solid rgba(16, 185, 129, 0.25);
+        }
+
+        [data-theme="dark"] .alert-success {
+            color: #6ee7b7;
+        }
+
+        /* Result stats */
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .stat {
+            background: var(--icon-bg);
+            padding: 18px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .stat-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .stat-saved {
+            grid-column: 1 / -1;
+            background: rgba(16, 185, 129, 0.12);
+        }
+
+        .stat-saved .stat-value {
+            color: var(--success);
+        }
+
+        /* Footer small */
+        .footer-note {
+            text-align: center;
+            margin-top: 40px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 24px 16px 48px;
+            }
+            .card {
+                padding: 24px 20px;
+            }
+            h1.page-title {
+                font-size: 1.35rem;
+            }
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <div class="container {% block container_class %}{% endblock %}">
+        <div class="page-header">
+            <a href="/" class="logo">
+                <span class="logo-icon">📁</span>
+                <h1>DocVex</h1>
+            </a>
+            <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему">
+                <span class="icon" id="themeIcon">🌙</span>
+                <span id="themeText">Тёмная</span>
+            </button>
+        </div>
+
+        {% block content %}{% endblock %}
+    </div>
+
+    <script>
+        const toggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+        const html = document.documentElement;
+
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        setTheme(savedTheme);
+
+        toggle.addEventListener('click', () => {
+            const current = html.getAttribute('data-theme') || 'light';
+            const next = current === 'light' ? 'dark' : 'light';
+            setTheme(next);
+            localStorage.setItem('theme', next);
+        });
+
+        function setTheme(theme) {
+            if (theme === 'dark') {
+                html.setAttribute('data-theme', 'dark');
+                themeIcon.textContent = '☀️';
+                themeText.textContent = 'Светлая';
+            } else {
+                html.removeAttribute('data-theme');
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'Тёмная';
+            }
+        }
+
+        // Drag & drop support
+        document.querySelectorAll('.upload').forEach(zone => {
+            const input = zone.querySelector('input[type="file"]');
+            if (!input) return;
+
+            ['dragenter', 'dragover'].forEach(evt => {
+                zone.addEventListener(evt, e => {
+                    e.preventDefault();
+                    zone.classList.add('dragover');
+                });
+            });
+
+            ['dragleave', 'drop'].forEach(evt => {
+                zone.addEventListener(evt, e => {
+                    e.preventDefault();
+                    zone.classList.remove('dragover');
+                });
+            });
+
+            zone.addEventListener('drop', e => {
+                if (e.dataTransfer.files.length) {
+                    input.files = e.dataTransfer.files;
+                    input.dispatchEvent(new Event('change'));
+                }
+            });
+        });
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

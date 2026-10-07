@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}{{ tool_name }} — результат · DocVex{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1 class="page-title">✅ Готово</h1>
+
+    <div class="alert alert-success">
+        Файл <strong>{{ original_name }}</strong> успешно обработан
+    </div>
+
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-label">Было</div>
+            <div class="stat-value">{{ original_size }}</div>
+        </div>
+        <div class="stat">
+            <div class="stat-label">Стало</div>
+            <div class="stat-value">{{ compressed_size }}</div>
+        </div>
+        <div class="stat stat-saved">
+            <div class="stat-label">Экономия</div>
+            <div class="stat-value">
+                {% if saved_percent > 0 %}
+                    −{{ saved_percent }}%
+                {% else %}
+                    без изменений
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <a class="btn"
+       href="/download?path={{ download_path | urlencode }}&name={{ download_name | urlencode }}&mimetype={{ mimetype | urlencode }}">
+        ⬇️ Скачать файл
+    </a>
+
+    <a href="{{ back_url }}" class="btn btn-secondary">
+        Сжать ещё один файл
+    </a>
+
+    <a href="/" class="back">← Вернуться на главную</a>
+</div>
+{% endblock %}

@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+
+{% block title %}DocVex — Инструменты для документов{% endblock %}
+
+{% block container_class %}container-wide{% endblock %}
+
+{% block extra_css %}
+<style>
+    .subtitle {
+        width: 100%;
+        text-align: center;
+        font-size: 1.1rem;
+        color: var(--text-muted);
+        margin-bottom: 36px;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 22px;
+    }
+
+    .tool-card {
+        display: flex;
+        flex-direction: column;
+        background: var(--card-bg);
+        padding: 28px 24px;
+        border-radius: var(--radius);
+        text-decoration: none;
+        color: inherit;
+        box-shadow: var(--shadow);
+        border: 1px solid var(--border);
+        transition: all 0.25s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .tool-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary), #0ea5e9);
+        opacity: 0;
+        transition: opacity 0.25s ease;
+    }
+
+    .tool-card:not(.disabled):hover {
+        transform: translateY(-6px);
+        box-shadow: var(--shadow-hover);
+    }
+
+    .tool-card:not(.disabled):hover::before {
+        opacity: 1;
+    }
+
+    .icon-box {
+        width: 52px;
+        height: 52px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 26px;
+        background: var(--icon-bg);
+        border-radius: 14px;
+        margin-bottom: 18px;
+        transition: background 0.25s ease;
+    }
+
+    .tool-card:not(.disabled):hover .icon-box {
+        background: var(--icon-bg-hover);
+    }
+
+    .tool-card h2 {
+        font-size: 1.15rem;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .tool-card p {
+        color: var(--text-muted);
+        font-size: 0.92rem;
+        flex-grow: 1;
+    }
+
+    .tool-card .arrow {
+        margin-top: 18px;
+        font-size: 0.88rem;
+        font-weight: 500;
+        color: var(--primary);
+        opacity: 0;
+        transform: translateX(-6px);
+        transition: all 0.25s ease;
+    }
+
+    .tool-card:not(.disabled):hover .arrow {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    .tool-card.disabled {
+        opacity: 0.65;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+
+    .badge {
+        display: inline-block;
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: var(--text-muted);
+        background: var(--badge-bg);
+        padding: 4px 10px;
+        border-radius: 20px;
+        margin-top: 14px;
+        align-self: flex-start;
+    }
+
+    footer {
+        text-align: center;
+        margin-top: 60px;
+        color: var(--text-muted);
+        font-size: 0.9rem;
+    }
+
+    @media (max-width: 600px) {
+        .page-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .subtitle {
+            text-align: left;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<p class="subtitle">Быстрые инструменты для сжатия и обработки документов</p>
+
+<div class="grid">
+    <a href="/pdf-compress" class="tool-card">
+        <div class="icon-box">📄</div>
+        <h2>Сжатие PDF</h2>
+        <p>Уменьшение размера PDF-файлов без потери качества</p>
+        <span class="arrow">Перейти →</span>
+    </a>
+
+    <a href="/word-compress" class="tool-card">
+        <div class="icon-box">📝</div>
+        <h2>Сжатие Word</h2>
+        <p>Оптимизация DOCX и изображений внутри документа</p>
+        <span class="arrow">Перейти →</span>
+    </a>
+
+    <a href="/pptx-compress" class="tool-card">
+        <div class="icon-box">📊</div>
+        <h2>Сжатие PowerPoint</h2>
+        <p>Оптимизация PPTX и изображений внутри презентации</p>
+        <span class="arrow">Перейти →</span>
+    </a>
+
+    <a href="/excel-compress" class="tool-card">
+        <div class="icon-box">📗</div>
+        <h2>Сжатие Excel</h2>
+        <p>Оптимизация XLSX и изображений внутри таблиц</p>
+        <span class="arrow">Перейти →</span>
+    </a>
+
+    <a href="/image" class="tool-card">
+        <div class="icon-box">🖼️</div>
+        <h2>Изображения</h2>
+        <p>Сжатие и конвертация изображений в нужный формат</p>
+        <span class="arrow">Перейти →</span>
+    </a>
+
+    <div class="tool-card disabled">
+        <div class="icon-box">🔧</div>
+        <h2>PDF-инструменты</h2>
+        <p>Объединение, разделение и обработка PDF</p>
+        <span class="badge">Скоро</span>
+    </div>
+
+    <div class="tool-card disabled">
+        <div class="icon-box">🔄</div>
+        <h2>Конвертация PDF</h2>
+        <p>PDF ↔ Word, Excel, изображения и другие форматы</p>
+        <span class="badge">Скоро</span>
+    </div>
+
+    <div class="tool-card disabled">
+        <div class="icon-box">🔍</div>
+        <h2>OCR — текст из PDF</h2>
+        <p>Распознавание текста со сканов и изображений</p>
+        <span class="badge">Скоро</span>
+    </div>
+</div>
+
+<footer>
+    DocVex · Максимальный размер файла — 50 МБ
+</footer>
+{% endblock %}

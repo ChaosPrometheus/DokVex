@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Сжатие PDF · DocVex{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1 class="page-title">📄 Сжатие PDF</h1>
+
+    {% if error %}
+    <div class="alert alert-error">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST" enctype="multipart/form-data" onsubmit="startProcess()">
+        <div class="upload" id="dropzone">
+            <div class="icon">📁</div>
+            <div>Выберите PDF-файл или перетащите сюда</div>
+            <input type="file" name="file" accept=".pdf,application/pdf" required
+                   onchange="showFile(this)">
+            <div id="filename"></div>
+        </div>
+
+        <div class="settings">
+            <label for="quality">Степень сжатия</label>
+            <select name="quality" id="quality">
+                <option value="screen">Максимальное сжатие</option>
+                <option value="ebook" selected>Баланс качества и размера</option>
+                <option value="printer">Высокое качество</option>
+                <option value="prepress">Для печати</option>
+            </select>
+        </div>
+
+        <button type="submit" id="button">Сжать PDF</button>
+    </form>
+
+    <a href="/" class="back">← Вернуться на главную</a>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function showFile(input) {
+    if (input.files && input.files.length > 0) {
+        const size = (input.files[0].size / (1024 * 1024)).toFixed(2);
+        document.getElementById("filename").textContent =
+            "Выбран файл: " + input.files[0].name + " (" + size + " МБ)";
+    }
+}
+
+function startProcess() {
+    const button = document.getElementById("button");
+    button.disabled = true;
+    button.textContent = "⏳ Сжимаем PDF...";
+}
+</script>
+{% endblock %}
